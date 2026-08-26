@@ -46,6 +46,7 @@ namespace TurboGaraj.Track
         private float _nextOpponentSpawnTime;
         private int _racesCompleted;
         private float _nextRaceThreshold; // Z position at which the next race completes
+        private bool _hasWarnedAboutTrackPrefab = false;
 
         private void Awake()
         {
@@ -118,7 +119,12 @@ namespace TurboGaraj.Track
         {
             if (trackSegmentPrefab == null)
             {
-                Debug.LogWarning("[TrackManager] trackSegmentPrefab is not assigned.");
+                // Only warn once to avoid spam
+                if (!_hasWarnedAboutTrackPrefab)
+                {
+                    Debug.LogWarning("[TrackManager] trackSegmentPrefab is not assigned. Assign a prefab in the inspector.");
+                    _hasWarnedAboutTrackPrefab = true;
+                }
                 return;
             }
 

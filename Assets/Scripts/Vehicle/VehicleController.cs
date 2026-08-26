@@ -114,6 +114,9 @@ namespace TurboGaraj.Vehicle
 
             // Optional: limit speed to currentMaxSpeed (simple drag-based approach)
             LimitSpeed(currentMaxSpeed);
+
+            // Debug: log the vehicle's linear velocity to verify forward movement
+            Debug.Log($"[VehicleController] Linear Velocity: {rb.linearVelocity}");
         }
 
         private void ApplyDrive(float throttle)
