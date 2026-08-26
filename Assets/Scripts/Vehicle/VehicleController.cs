@@ -26,7 +26,7 @@ namespace TurboGaraj.Vehicle
         public float staminaDrainRate = 10f;
 
         [Header("Motor")]
-        [Tooltip("Base motor torque (used if EngineController not present)")]
+        [Tooltip("Motor torque applied to the driven wheels (in Newton meters)")]
         public float baseMotorTorque = 1500f;
 
         [Header("Throttle")]

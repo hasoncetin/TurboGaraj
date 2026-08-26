@@ -9,7 +9,6 @@ using UnityEngine.UI;
 using TurboGaraj.Vehicle;
 using TurboGaraj.UI;
 using TurboGaraj.Track;
-using TurboGaraj.Economy;
 
 /// <summary>
 /// Editor utility to set up the M1 prototype scene in the active scene.
@@ -108,10 +107,6 @@ public static class TurboGarajSetup
         planeGO.GetComponent<Renderer>().material = planeMat;
 
         // Managers
-        // EconomyManager
-        GameObject economyGO = new GameObject("EconomyManager");
-        economyGO.AddComponent<EconomyManager>();
-
         // TrackManager
         GameObject trackGO = new GameObject("TrackManager");
         trackGO.AddComponent<TrackManager>();
@@ -127,8 +122,6 @@ public static class TurboGarajSetup
         rb.centerOfMass = new Vector3(0f, -0.3f, 0f);
 
         VehicleController vc = vehicleGO.AddComponent<VehicleController>();
-        EngineController ec = vehicleGO.AddComponent<EngineController>();
-        ec.peakTorque = 1500f; // Set engine peak torque
 
         // Set up wheel colliders
         WheelCollider CreateWheel(string name, Vector3 localPos)
@@ -158,17 +151,6 @@ public static class TurboGarajSetup
         var visualMat = new Material(GetSafeShader("Universal Render Pipeline/Lit", "Standard", "Diffuse"));
         visualMat.color = Color.red;
         vehicleGO.GetComponent<Renderer>().material = visualMat;
-
-        // Engine Audio Controller
-        // Ensure the vehicle has an AudioSource
-        var audioSource = vehicleGO.GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = vehicleGO.AddComponent<AudioSource>();
-        }
-        var engineAudio = vehicleGO.AddComponent<EngineAudioController>();
-        // Note: audio clips are left null; the script will warn and not play sound.
-        // In a real project, you would assign appropriate audio clips.
 
         // UI (Stamina Slider)
         GameObject canvasGO = new GameObject("StaminaCanvas");
@@ -232,44 +214,6 @@ public static class TurboGarajSetup
         // Attach StaminaUI script to the slider (or its parent)
         var staminaUI = sliderGO.AddComponent<StaminaUI>();
         staminaUI.vehicle = vc; // assign the vehicle controller
-
-        // --- HUD (Vehicle Stats) ---
-        GameObject hudGO = new GameObject("VehicleHUD");
-        hudGO.transform.SetParent(canvasGO.transform, false);
-        var hud = hudGO.AddComponent<VehicleHUD>();
-
-        // Helper to create a UI Text element
-        Text CreateUIText(string name, Vector2 anchoredPosition, int fontSize = 24, Color? color = null)
-        {
-            GameObject textGO = new GameObject(name);
-            textGO.transform.SetParent(hudGO.transform, false);
-            var text = textGO.AddComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            text.fontSize = fontSize;
-            text.alignment = TextAnchor.MiddleLeft;
-            text.color = color ?? Color.white;
-            var rectTransform = text.GetComponent<RectTransform>();
-            rectTransform.anchorMin = new Vector2(0, 1); // top-left
-            rectTransform.anchorMax = new Vector2(0, 1);
-            rectTransform.anchoredPosition = anchoredPosition;
-            rectTransform.sizeDelta = new Vector2(300, 30); // width, height
-            return text;
-        }
-
-        // Create six text elements for the HUD
-        float startY = 10f; // starting Y offset from top
-        float lineHeight = 30f;
-        hud.speedText = CreateUIText("SpeedText", new Vector2(10f, -startY));
-        hud.rpmText = CreateUIText("RPMText", new Vector2(10f, -startY - lineHeight));
-        hud.gearText = CreateUIText("GearText", new Vector2(10f, -startY - 2 * lineHeight));
-        hud.staminaText = CreateUIText("StaminaText", new Vector2(10f, -startY - 3 * lineHeight));
-        hud.softCurrencyText = CreateUIText("SoftCurrencyText", new Vector2(10f, -startY - 4 * lineHeight));
-        hud.hardCurrencyText = CreateUIText("HardCurrencyText", new Vector2(10f, -startY - 5 * lineHeight));
-
-        // --- Camera Follow ---
-        var follow = cameraGO.AddComponent<CameraFollow>();
-        follow.target = vehicleGO.transform;
-        // offset and smoothTime already have defaults in the script (0,3,-7 and 0.3)
 
         // --- Step 3: Focus and Select ---
         // Focus the scene view on the vehicle
