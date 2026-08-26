@@ -205,6 +205,6 @@ namespace TurboGaraj.Track
         /// <summary>
         /// Gets whether the current task (required races) is completed.
         /// </summary>
-        public bool TaskCompleted => _racesCompleted >= _racesRequired;
+        public bool TaskCompleted => _racesCompleted >= racesRequired;
     }
 }
