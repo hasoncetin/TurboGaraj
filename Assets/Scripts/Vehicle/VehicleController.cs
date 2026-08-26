@@ -26,8 +26,8 @@ namespace TurboGaraj.Vehicle
         public float staminaDrainRate = 10f;
 
         [Header("Motor")]
-        [Tooltip("Motor torque applied to the driven wheels (in Newton meters)")]
-        public float motorTorque = 1500f;
+        [Tooltip("Base motor torque (used if EngineController not present)")]
+        public float baseMotorTorque = 1500f;
 
         [Header("Throttle")]
         [Tooltip("Constant throttle input (0-1) applied automatically")] [Range(0f, 1f)]
@@ -40,6 +40,11 @@ namespace TurboGaraj.Vehicle
         /// Gets the current stamina as a normalized value (0-1)
         /// </summary>
         public float CurrentStaminaNormalized => initialStamina > 0 ? currentStamina / initialStamina : 0f;
+
+        /// <summary>
+        /// Gets the current speed in kilometers per hour.
+        /// </summary>
+        public float SpeedKmh => rb.linearVelocity.magnitude * 3.6f;
 
         private void Awake()
         {
@@ -113,9 +118,9 @@ namespace TurboGaraj.Vehicle
 
         private void ApplyDrive(float throttle)
         {
-            // Apply torque to the wheels
-            rearLeftWheel.motorTorque = throttle * motorTorque;
-            rearRightWheel.motorTorque = throttle * motorTorque;
+            // Apply torque to the wheels (rear-wheel drive)
+            rearLeftWheel.motorTorque = throttle * baseMotorTorque;
+            rearRightWheel.motorTorque = throttle * baseMotorTorque;
             frontLeftWheel.motorTorque = 0f; // Front wheels not driven (RWD)
             frontRightWheel.motorTorque = 0f;
         }
@@ -123,9 +128,9 @@ namespace TurboGaraj.Vehicle
         private void LimitSpeed(float maxSpeed)
         {
             // Simple speed limiter: if we exceed maxSpeed, add opposite drag
-            if (rb.velocity.magnitude > maxSpeed)
+            if (rb.linearVelocity.magnitude > maxSpeed)
             {
-                Vector3 vel = rb.velocity;
+                Vector3 vel = rb.linearVelocity;
                 Vector3 overspeed = vel - (vel.normalized * maxSpeed);
                 rb.AddForce(-overspeed * 10f, ForceMode.Acceleration); // Adjust strength as needed
             }

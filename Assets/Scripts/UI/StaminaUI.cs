@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TurboGaraj.Vehicle;
 
 namespace TurboGaraj.UI
 {
