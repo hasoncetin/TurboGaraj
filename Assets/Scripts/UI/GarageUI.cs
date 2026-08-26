@@ -159,7 +159,7 @@ namespace TurboGaraj.UI
 
         private void OnStaminaUpgradeClicked()
         {
-            if (economyManager != null && economyManager.PurchaseUpgrade(EconomyManager.UpgradeType.Stamina))
+            if (economyManager != null && economyManager.PurchaseUpgrade(UpgradeType.Stamina))
             {
                 RefreshCurrencyUI();
                 RefreshUpgradeUI();
@@ -168,7 +168,7 @@ namespace TurboGaraj.UI
 
         private void OnPowerUpgradeClicked()
         {
-            if (economyManager != null && economyManager.PurchaseUpgrade(EconomyManager.UpgradeType.Power))
+            if (economyManager != null && economyManager.PurchaseUpgrade(UpgradeType.Power))
             {
                 RefreshCurrencyUI();
                 RefreshUpgradeUI();
@@ -177,7 +177,7 @@ namespace TurboGaraj.UI
 
         private void OnIncomeUpgradeClicked()
         {
-            if (economyManager != null && economyManager.PurchaseUpgrade(EconomyManager.UpgradeType.Income))
+            if (economyManager != null && economyManager.PurchaseUpgrade(UpgradeType.Income))
             {
                 RefreshCurrencyUI();
                 RefreshUpgradeUI();

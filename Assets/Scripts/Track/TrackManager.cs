@@ -185,11 +185,11 @@ namespace TurboGaraj.Track
             if (vehicleZ >= _nextRaceThreshold)
             {
                 _racesCompleted++;
-                Debug.Log($"[TrackManager] Race completed! Total races: {_racesCompleted}/{_racesRequired}");
+                Debug.Log($"[TrackManager] Race completed! Total races: {_racesCompleted}/{racesRequired}");
                 _nextRaceThreshold += raceLength; // set threshold for next race
 
                 // Optionally, you could trigger a UI event or give rewards here
-                if (_racesCompleted >= _racesRequired)
+                if (_racesCompleted >= racesRequired)
                 {
                     Debug.Log("[TrackManager] Task completed! All required races finished.");
                     // Here you could notify other systems (e.g., unlock a new car, grant currency)
